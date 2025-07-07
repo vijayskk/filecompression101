@@ -3,6 +3,9 @@
 #include <unordered_map>
 #include <queue>
 #include <vector>
+#include <fstream>
+#include <sstream>
+
 
 using namespace std;
 
@@ -19,6 +22,35 @@ struct Compare{
         return node1->freq > node2->freq;
     }
 };
+
+void writeBitsToFile(const string& bitString, const string& filename) {
+    ofstream outFile(filename, ios::binary);
+    if (!outFile) {
+        cerr << "Error opening output file!\n";
+        return;
+    }
+
+    unsigned char buffer = 0;
+    int bitCount = 0;
+
+    for (char bit : bitString) {
+        buffer = (buffer << 1) | (bit - '0');
+        bitCount++;
+        if (bitCount == 8) {
+            outFile.put(buffer);
+            buffer = 0;
+            bitCount = 0;
+        }
+    }
+
+    if (bitCount > 0) {
+        buffer <<= (8 - bitCount); // Pad remaining bits with 0s
+        outFile.put(buffer);
+    }
+
+    outFile.close();
+}
+
 
 void buildCodeMap(Node * root,string code,unordered_map<char,string> & huffmanCode){
     if (!root)
@@ -62,21 +94,24 @@ void huffmanEncode(string& text){
     buildCodeMap(pq.top(),"",huffmanCode);
 
     for (auto pair : huffmanCode) {
-        cout << "'" << (pair.first == ' ' ? "[space]" : string(1, pair.first)) << "' : " << pair.second << "\n";
+        cout << "'" << (string(1, pair.first)) << "' : " << pair.second << "\n";
     }
     
     string encoded;
     for(char ch : text){
         encoded += huffmanCode[ch];
     }
-    cout<< "Encoded: " << encoded << endl;
-    cout<< "Encoded bits: " << encoded.length() << endl;
-    cout<< "Original bits: " << text.length() * 8 << endl;
+    //cout<< "Encoded: " << encoded << endl;
+    writeBitsToFile(encoded,"text.bin");
+    encoded.clear();
 }
 
 int main(int argc, char const *argv[])
 {
-    string text = "C++ Programming";
+    ifstream inFile("text.txt",ios::binary | ios::in);
+    stringstream strStream;
+    strStream << inFile.rdbuf();
+    string text = strStream.str();
     huffmanEncode(text);
     return 0;
 }
