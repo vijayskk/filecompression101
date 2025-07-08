@@ -66,7 +66,7 @@ void buildCodeMap(Node * root,string code,unordered_map<char,string> & huffmanCo
 }
 
 void huffmanEncode(string& text){
-    unordered_map<int,char> freq;
+    unordered_map<char,int> freq;
     for(char ch : text){
         freq[ch]++;
     }
@@ -102,6 +102,7 @@ void huffmanEncode(string& text){
         encoded += huffmanCode[ch];
     }
     //cout<< "Encoded: " << encoded << endl;
+    cout<< "\n" << encoded.length() << " " << text.length() * 8 <<endl;
     writeBitsToFile(encoded,"text.bin");
     encoded.clear();
 }
