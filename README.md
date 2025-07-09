@@ -12,11 +12,12 @@ This project implements Huffman coding in C++ for compressing and decompressing 
 ## 🔧 Installation
 
 ```bash
+mkdir build
 make
 sudo make install
 ```
 
-This installs the CLI tool as `huffman` in `/usr/local/bin`.
+This installs the CLI tool as `vzip` in `/usr/local/bin`.
 
 ## 🗑️ Uninstall
 
@@ -29,7 +30,7 @@ sudo make uninstall
 ### Compress a file
 
 ```bash
-huffman compress <inputfile.txt>
+vzip compress <inputfile.txt>
 ```
 
 This will create a file named `<inputfile>.vzip`.
@@ -37,7 +38,7 @@ This will create a file named `<inputfile>.vzip`.
 ### Decompress a file
 
 ```bash
-huffman decompress <inputfile.vzip>
+vzip decompress <inputfile.vzip>
 ```
 
 This will create a file named `<inputfile>.txt`.
@@ -46,8 +47,6 @@ This will create a file named `<inputfile>.txt`.
 
 - `src/` — source code
 - `include/` — header files
-- `text.txt` — sample input
-- `text.vzip` — compressed output
 - `build/` — output binary directory
 
 ## 🛠 Requirements
